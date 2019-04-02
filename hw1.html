@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
   <head>
-    <title>Hello</title>
+    <title>hw1</title>
     <link rel="stylesheet" href="./index.css">
     <style>body{overflow: hidden}</style>
   </head>
@@ -92,15 +92,15 @@ class Chair{
 
 function init() {
 	
-  //«Ø¥ß³õ´º
+  //å»ºç«‹å ´æ™¯
   scene = new THREE.Scene();
   renderer = new THREE.WebGLRenderer();
-  renderer.setSize(window.innerWidth, window.innerHeight); // ³õ´º¤j¤p
-  renderer.setClearColor(0xeeeeee, 1.0); // ¹w³]­I´ºÃC¦â
+  renderer.setSize(window.innerWidth, window.innerHeight); // å ´æ™¯å¤§å°
+  renderer.setClearColor(0xeeeeee, 1.0); // é è¨­èƒŒæ™¯é¡è‰²
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
   
-  // Äá¼v¾÷
+  // æ”å½±æ©Ÿ
   camera = new THREE.PerspectiveCamera(
     60,
     window.innerWidth / window.innerHeight,
@@ -108,14 +108,14 @@ function init() {
     100
   );
   
-  // FPSµøµ¡
+  // FPSè¦–çª—
   stats = new Stats();
   stats.domElement.style.position = 'absolute';
   stats.domElement.style.top = '0px';
   stats.domElement.style.zIndex = 100;
   document.body.appendChild( stats.domElement );
 
-	// ¿O¥ú
+	// ç‡ˆå…‰
   var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.75 );
   directionalLight.position.set(10,10,10);
   scene.add( directionalLight );
@@ -127,17 +127,17 @@ function init() {
   lights[2] = new SpotLight(10,8,3,9,10,5);
   lights[3] = new SpotLight(-10,8,-10,9);
   
-  // ¦aªO
+  // åœ°æ¿
   const planeGeometry = new THREE.PlaneGeometry(30, 30)
   const planeTexture = texture("https://i.imgur.com/8Pp2QFA.jpg",2);
   const planeMaterial = new THREE.MeshPhongMaterial({ map: planeTexture });
 	let plane = new THREE.Mesh(planeGeometry, planeMaterial)
-	plane.rotation.x = -0.5 * Math.PI // ¨Ï¥­­±»P y ¶b««ª½¡A¨ÃÅı¥¿­±´Â¤W
+	plane.rotation.x = -0.5 * Math.PI // ä½¿å¹³é¢èˆ‡ y è»¸å‚ç›´ï¼Œä¸¦è®“æ­£é¢æœä¸Š
 	plane.position.set(0, 0, 0)
   plane.receiveShadow = true;
 	scene.add(plane)
   
-  // Àğ¾À
+  // ç‰†å£
   new Wall(-15, 0);
   new Wall(15, 0);
   new Wall(0, -15, 0.5);
@@ -148,7 +148,7 @@ function init() {
   new Wall(-5, -12.5, 0, 6);
   new Wall(-12.5, -5, 0.5, 6);
   
-  // ´È¤l
+  // æ¤…å­
   new Chair(0, 10);
   new Chair(7.5, 10);
   new Chair(-7.5, 10);
@@ -194,7 +194,7 @@ function view(){
     				camera.lookAt(new THREE.Vector3(10,3,0));
             ckey=0; break;
   }
-¡@//alert("Sucess");
+ã€€//alert("Sucess");
 }
 
 function lightSwitch(v=1){
@@ -204,7 +204,7 @@ function lightSwitch(v=1){
   //alert("Sucess");
 }
 
-// ºÊÅ¥¿Ã¹õ¼e°ª
+// ç›£è½è¢å¹•å¯¬é«˜
 window.addEventListener('resize', function() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -215,7 +215,7 @@ init();
 render();
 view();
 
-//«ö¶s¤Î·Æ±ì¨Æ¥ó
+//æŒ‰éˆ•åŠæ»‘æ¡¿äº‹ä»¶
 document.getElementById("b01").onclick=function(){view()};
 $('#slider').change( function(){
 	console.log ( $(this).val() );

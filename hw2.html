@@ -10,24 +10,6 @@ and open the template in the editor.
     <link rel="stylesheet" href="./index.css">
     <style>body{overflow: hidden}</style>
   </head>
-  <html>
-  <head>
-    <title>Fallout Gallery</title>
-    <link rel="stylesheet" href="./index.css">
-    <style>body{overflow: hidden}</style>
-  </head>
-  <html>
-  <head>
-    <title>Fallout Gallery</title>
-    <link rel="stylesheet" href="./index.css">
-    <style>body{overflow: hidden}</style>
-  </head>
-  <html>
-  <head>
-    <title>Fallout Gallery</title>
-    <link rel="stylesheet" href="./index.css">
-    <style>body{overflow: hidden}</style>
-  </head>
   <body>
     <h1 style="text-align:center"> Fallout Gallery </h1>
     <hr>
@@ -66,9 +48,7 @@ and open the template in the editor.
     <div id="textOut" style="float:right; margin:1vw; width:47vw; font-size: 15px; font-family:Microsoft JhengHei;"></div>
   </body>
 </html>
-</html>
-</html>
-</html>
+
 <script type="text/javascript">
 var fps = false;
 var scene, controls, container;
@@ -175,7 +155,7 @@ function init() {
   ww2 = $("#monitor1").innerWidth();
   hh2 = $("#monitor1").innerHeight();
   
-  //«Ø¥ß³õ´º
+  //å»ºç«‹å ´æ™¯
   scene = new THREE.Scene();
   for(let i=0; i<5; i++){
   	renderer[i] = new THREE.WebGLRenderer();
@@ -196,7 +176,7 @@ function init() {
   $("#monitor3").append(renderer[3].domElement);
   $("#monitor4").append(renderer[4].domElement);
   
-  // Äá¼v¾÷
+  // æ”å½±æ©Ÿ
   camera[0] = new THREE.PerspectiveCamera(60, ww/hh, 0.1, 100);
   for(let i=1; i<5; i++)
     camera[i] = new THREE.PerspectiveCamera(60, ww2/hh2, 0.1, 100);
@@ -210,7 +190,7 @@ function init() {
   camera[4].position.set(14, 3, -14);
   camera[4].lookAt(new THREE.Vector3(10,3,0));
   
-  // FPSµøµ¡
+  // FPSè¦–çª—
   if(fps == true){
     stats = new Stats();
     stats.domElement.style.position = 'absolute';
@@ -219,7 +199,7 @@ function init() {
     document.body.appendChild( stats.domElement );
   }
 
-	// ¿O¥ú
+	// ç‡ˆå…‰
   new DirectLight(20,10,20,0.6);
   new DirectLight(-5,10,-5,0.6);
   new DirectLight(5,10,-5,0.6);
@@ -233,17 +213,17 @@ function init() {
   new SpotLight(10,8,0,5,10,8);  		   //Bomb 
   new SpotLight(-10,8,-10,9);
   
-  // ¦aªO
+  // åœ°æ¿
   const planeGeometry = new THREE.PlaneGeometry(30, 30)
   const planeTexture = texture("https://i.imgur.com/8Pp2QFA.jpg",2);
   const planeMaterial = new THREE.MeshPhongMaterial({ map: planeTexture });
 	let plane = new THREE.Mesh(planeGeometry, planeMaterial)
-	plane.rotation.x = -0.5 * Math.PI // ¨Ï¥­­±»P y ¶b««ª½¡A¨ÃÅı¥¿­±´Â¤W
+	plane.rotation.x = -0.5 * Math.PI // ä½¿å¹³é¢èˆ‡ y è»¸å‚ç›´ï¼Œä¸¦è®“æ­£é¢æœä¸Š
 	plane.position.set(0, 0, 0)
   plane.receiveShadow = true;
 	scene.add(plane);
   
-  // Àğ¾À
+  // ç‰†å£
   new Wall(-15, 0);
   new Wall(15, 0);
   new Wall(0, -15, 0.5);
@@ -254,13 +234,13 @@ function init() {
   new Wall(-5, -12.5, 0, 6);
   new Wall(-12.5, -5, 0.5, 6);
   
-  // ´È¤l
+  // æ¤…å­
   new Chair(0, 10);
   new Chair(7.5, 10);
   new Chair(-7.5, 10);
   new Chair(10, 0, 0.5);
   
-  //¤è¶ô
+  //æ–¹å¡Š
   var geometry = new THREE.BoxGeometry(1,1,1);
   var material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
   cube = new THREE.Mesh( geometry,material);
@@ -270,7 +250,7 @@ function init() {
   pickables.push(cube);
   scene.add(cube);
   
-  //µe§@
+  //ç•«ä½œ
   new Art("a1", -14.4, 3.5, 10, 3, 3.9, 0.5, "https://i.imgur.com/Skz2OUY.jpg"); 
   new Art("a2", 0, 3.5, 4.4, 3, 4.2, 1, "https://i.imgur.com/vz5eXyX.jpg");
   new Art("a3", 4.4, 3.5, 0, 3, 4.5, -0.5, "https://i.imgur.com/us9o4H6.jpg");
@@ -278,7 +258,7 @@ function init() {
   new Art("a5", 0, 3.5, -14.4, 6, 4, 0, "https://i.imgur.com/B9HDwhZ.jpg");
   new Art("a6", 10, 3.5, 4.4, 6, 4, 1, "https://i.imgur.com/Inhynmx.jpg");
   
-  //¨Æ¥ó
+  //äº‹ä»¶
   document.getElementById("artplace").onchange=function(){view()};
   document.addEventListener('mousemove', onDocumentMouseMove, false);
 }
@@ -347,7 +327,7 @@ function view(){
     					controls.target = new THREE.Vector3(0,0,0);
               break;
   }
-¡@//alert(v);
+ã€€//alert(v);
 }
 
 function onDocumentMouseMove(event) {
@@ -364,35 +344,35 @@ function onDocumentMouseMove(event) {
   if (intersects.length > 0) {
     switch(intersects[0].object.name){
     	case "a1": document.getElementById("textOut").innerHTML =
-                 "¹q¤l¹CÀ¸ - ²§¹Ğ¾l¥Í4ªº¬ü³N«Ê­±<br>" +
-                 "¥»¦¸®iÄıªº¥DÃD<br>";
+                 "é›»å­éŠæˆ² - ç•°å¡µé¤˜ç”Ÿ4çš„ç¾è¡“å°é¢<br>" +
+                 "æœ¬æ¬¡å±•è¦½çš„ä¸»é¡Œ<br>";
       					 break;
       case "a2": document.getElementById("textOut").innerHTML =
-                 "¶¼®Æ®ü³ø - Nuka Cola<br>" +
-                 "¹CÀ¸¤¤´c·d¥i¤f¥i¼Ö(Coca Cola)ªº¶¼«~<br>";
+                 "é£²æ–™æµ·å ± - Nuka Cola<br>" +
+                 "éŠæˆ²ä¸­æƒ¡æå¯å£å¯æ¨‚(Coca Cola)çš„é£²å“<br>";
       					 break;
       case "a3": document.getElementById("textOut").innerHTML =
-                 "¶¼®Æ®ü³ø - Nuka Colaªº«Å¶Ç¼s§i<br>" +
-                 "¹CÀ¸¤¤ÀH³B¥i¨£ªºNuka Cola«Å¶Ç®ü³ø<br>" +
-                 "µe­±¤¤¨­¬ï¤ÓªÅ¦ç¤ÏÀ³²{¹ê¤¤60¦~¥Nªº¤ÓªÅÄvÁÉ<br>";
+                 "é£²æ–™æµ·å ± - Nuka Colaçš„å®£å‚³å»£å‘Š<br>" +
+                 "éŠæˆ²ä¸­éš¨è™•å¯è¦‹çš„Nuka Colaå®£å‚³æµ·å ±<br>" +
+                 "ç•«é¢ä¸­èº«ç©¿å¤ªç©ºè¡£åæ‡‰ç¾å¯¦ä¸­60å¹´ä»£çš„å¤ªç©ºç«¶è³½<br>";
       					 break;
       case "a4": document.getElementById("textOut").innerHTML =
-                 "¬ü³N¹Ï - War Never Changes<br>" +
-                 "¹CÀ¸¥@¬É³]©w©ó¤@­Ó¬[ªÅªº¥­¦æ®ÉªÅ<br>" +
-                 "¦]¬°®Ö¾Ôª§¾É­P¥@¬É´İ¯}¤£³ô<br>" +
-                 "¼Ğ»y¤Á¦X¤HÃş¤Şµo®Ö¾Ôª§¡A¦Ó¾Ôª§¥Ã¤£§ïÅÜ<br>";
+                 "ç¾è¡“åœ– - War Never Changes<br>" +
+                 "éŠæˆ²ä¸–ç•Œè¨­å®šæ–¼ä¸€å€‹æ¶ç©ºçš„å¹³è¡Œæ™‚ç©º<br>" +
+                 "å› ç‚ºæ ¸æˆ°çˆ­å°è‡´ä¸–ç•Œæ®˜ç ´ä¸å ª<br>" +
+                 "æ¨™èªåˆ‡åˆäººé¡å¼•ç™¼æ ¸æˆ°çˆ­ï¼Œè€Œæˆ°çˆ­æ°¸ä¸æ”¹è®Š<br>";
       					 break;
       case "a5": document.getElementById("textOut").innerHTML =
-                 "¬ü³N¹Ï - Frozen<br>" +
-                 "¹CÀ¸¤¤¥D¨¤±aµÛ¨à¤l¤@°_¶i¤J§N­á¿µ<br>" +
-                 "¸Ñ­á«á¨à¤l«o³Q¤£©ú²ÕÂ´µ¹¸j¬[<br>" + 
-                 "¦P®É³o¤]¬O¹CÀ¸ªº¶}³õ¼@±¡<br>";
+                 "ç¾è¡“åœ– - Frozen<br>" +
+                 "éŠæˆ²ä¸­ä¸»è§’å¸¶è‘—å…’å­ä¸€èµ·é€²å…¥å†·å‡è‰™<br>" +
+                 "è§£å‡å¾Œå…’å­å»è¢«ä¸æ˜çµ„ç¹”çµ¦ç¶æ¶<br>" + 
+                 "åŒæ™‚é€™ä¹Ÿæ˜¯éŠæˆ²çš„é–‹å ´åŠ‡æƒ…<br>";
       					 break;
       case "a6": document.getElementById("textOut").innerHTML =
-                 "¬ü³N¹Ï - Bomb<br>" +
-                 "¹CÀ¸¤¤®Ö¼uÃz¬µªº³õ´º<br>" +
-                 "¦b¦¹¦P®É¥D¨¤¶i¤J¦a©³Á×Ãø©Òªº§N­á¿µ¥ğ¯v<br>" + 
-                 "¦Ó¥~ÀYªº¥@¬ÉÅÜ¦¨´İ¯}¤£³ô<br>";
+                 "ç¾è¡“åœ– - Bomb<br>" +
+                 "éŠæˆ²ä¸­æ ¸å½ˆçˆ†ç‚¸çš„å ´æ™¯<br>" +
+                 "åœ¨æ­¤åŒæ™‚ä¸»è§’é€²å…¥åœ°åº•é¿é›£æ‰€çš„å†·å‡è‰™ä¼‘çœ <br>" + 
+                 "è€Œå¤–é ­çš„ä¸–ç•Œè®Šæˆæ®˜ç ´ä¸å ª<br>";
       					 break;
       default:   document.getElementById("textOut").innerHTML =" ";
     }
@@ -402,7 +382,7 @@ function onDocumentMouseMove(event) {
   }
 }
 
-// ºÊÅ¥¿Ã¹õ¼e°ª
+// ç›£è½è¢å¹•å¯¬é«˜
 window.addEventListener('resize', function() {
 	var ww  = $("#container").innerWidth();
   var hh  = $("#container").innerHeight();

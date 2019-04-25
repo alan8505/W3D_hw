@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+  <head>
+    <title>Fallout Gallery</title>
+    <link rel="stylesheet" href="./index.css">
+    <style>body{overflow: hidden}</style>
+  </head>
+  <html>
+  <head>
+    <title>Fallout Gallery</title>
+    <link rel="stylesheet" href="./index.css">
+    <style>body{overflow: hidden}</style>
+  </head>
+  <html>
+  <head>
+    <title>Fallout Gallery</title>
+    <link rel="stylesheet" href="./index.css">
+    <style>body{overflow: hidden}</style>
+  </head>
+  <html>
+  <head>
+    <title>Fallout Gallery</title>
+    <link rel="stylesheet" href="./index.css">
+    <style>body{overflow: hidden}</style>
+  </head>
+  <body>
+    <h1 style="text-align:center"> Fallout Gallery </h1>
+    <hr>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/96/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="./index.js"></script>
+    
+    <div id="container" style="float:left; margin:1vw; margin-left:10vw; width:35vw; height:35vw"></div>
+    
+    <div style="float:left; margin:1vw; margin-right:10vw; width:30vw;">
+      <center><table>
+        <tr>
+        <td><center>Please select:</center></td>
+        <td><form><select id="artplace">
+          <option value="d">default</option>
+          <option value="1">Fallout 4 Cover</option>
+          <option value="2">Nuka Cola</option>
+          <option value="3">Nuka Cola Space Girl</option>
+          <option value="4">War Never Changes</option>
+          <option value="5">Frozen</option>
+          <option value="6">Bomb</option>
+        </select></form></td>
+        </tr>
+        <tr>
+        <td><div id="monitor1" style="margin:1vw; width:15vw; height:10vw"></div></td>
+        <td><div id="monitor2" style="margin:1vw; width:15vw; height:10vw"></div></td>
+        </tr>
+        <tr>
+        <td><div id="monitor3" style="margin:1vw; width:15vw; height:10vw"></div></td>
+        <td><div id="monitor4" style="margin:1vw; width:15vw; height:10vw"></div></td>
+        </tr>
+      </table></center>
+    </div>   
+    <div id="textOut" style="float:right; margin:1vw; width:47vw; font-size: 15px; font-family:Microsoft JhengHei;"></div>
+  </body>
+</html>
+</html>
+</html>
+</html>
+<script type="text/javascript">
+var fps = false;
+var scene, controls, container;
+var stats, cube;
+var ww, hh, ww2, hh2;
+var counter = 0;
+var renderer = [];
+var camera = [];
+
+var mouse = new THREE.Vector2();
+var raycaster = new THREE.Raycaster();
+var pickables = [];
+
+class DirectLight{
+	constructor(x, y, z, lv){
+  	let directionalLight = new THREE.DirectionalLight( 0xffffff, lv );
+    directionalLight.position.set(x,y,z);
+    //directionalLight.castShadow = true;
+    scene.add( directionalLight );
+  }
+}
+
+class SpotLight{
+	constructor(x=0, y=0, z=0, ang=6, x2=x, z2=z){
+    let spotLight = new THREE.SpotLight(0xffffff,0.5);
+    spotLight.position.set(x, y, z);
+    spotLight.castShadow = true;
+    spotLight.angle = Math.PI/ang;
+    scene.add(spotLight);
+    let target = new THREE.Object3D();
+    target.position.set(x2, 0, z2);
+    scene.add(target);
+		spotLight.target = target;
+    let geometry = new THREE.SphereGeometry(0.5, 10, 10);
+  	let material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
+  	let obj = new THREE.Mesh(geometry, material);
+    obj.position.set(x, y, z);
+    scene.add(obj);
+  }
+  intensity(v=1){
+  	this.spotLight.intensity = v;
+  }
+}
+
+class Wall{
+	constructor(x, z, ry=0, a=30){
+  	let geometry = new THREE.BoxGeometry(1, 10, a);
+  	let material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
+  	let obj = new THREE.Mesh(geometry, material);
+  	obj.position.set(x, 2.5, z);
+    obj.rotation.y = ry*Math.PI;
+    obj.castShadow = true;
+		obj.receiveShadow = true;
+    pickables.push(obj);
+  	scene.add(obj);
+  }
+}
+
+class Chair{
+	constructor(x, z, ry=0){
+  	let frame = new THREE.Object3D();
+    let tex = texture("https://i.imgur.com/dsKv1ul.jpg");
+  	let material = new THREE.MeshLambertMaterial({ map: tex });
+    let geometry = new THREE.BoxGeometry(3, 0.25, 1);
+    let geometry1 = new THREE.BoxGeometry(0.25, 1, 1);
+    let geometry2 = geometry1.clone();
+  	let obj = new THREE.Mesh(geometry, material);
+    let obj1 = new THREE.Mesh(geometry1, material);
+    let obj2 = new THREE.Mesh(geometry2, material);
+    obj.position.set(0, 0, 0);
+		//obj.receiveShadow = true;
+    frame.add(obj);
+    obj1.position.set(1.6, -0.375, 0);
+		//obj1.receiveShadow = true;
+    frame.add(obj1);
+    obj2.position.set(-1.6, -0.375, 0);
+		//obj2.receiveShadow = true;
+    frame.add(obj2);
+  	frame.position.set(x, 0.85, z);
+    frame.rotation.y = ry*Math.PI;
+    //frame.castShadow = true;
+  	scene.add(frame);
+  }
+}
+
+class Art{
+	constructor(n, x, y, z, w, h, r, tex){
+  	let Geometry = new THREE.PlaneGeometry(w, h);
+    let Texture = texture(tex);
+    let Material = new THREE.MeshBasicMaterial({ map: Texture });
+    let art = new THREE.Mesh(Geometry, Material)
+    art.rotation.y = r * Math.PI;
+    art.position.set(x, y, z);
+    art.receiveShadow = true;
+    art.name = n;
+    pickables.push(art);
+    scene.add(art);
+  }
+}
+
+function init() {
+	ww  = $("#container").innerWidth();
+  hh  = $("#container").innerHeight();
+  ww2 = $("#monitor1").innerWidth();
+  hh2 = $("#monitor1").innerHeight();
+  
+  //建立場景
+  scene = new THREE.Scene();
+  for(let i=0; i<5; i++){
+  	renderer[i] = new THREE.WebGLRenderer();
+    if(i==0)
+    	renderer[i].setSize(ww, hh);
+    else
+    	renderer[i].setSize(ww2, hh2);
+    renderer[i].setClearColor(0xeeeeee, 1.0);
+    renderer[i].shadowMap.enabled = true;
+  }
+  document.body.appendChild(renderer[0].domElement);
+  
+  container = document.getElementById("container");
+  
+  $("#container").append(renderer[0].domElement);
+  $("#monitor1").append(renderer[1].domElement);
+  $("#monitor2").append(renderer[2].domElement);
+  $("#monitor3").append(renderer[3].domElement);
+  $("#monitor4").append(renderer[4].domElement);
+  
+  // 攝影機
+  camera[0] = new THREE.PerspectiveCamera(60, ww/hh, 0.1, 100);
+  for(let i=1; i<5; i++)
+    camera[i] = new THREE.PerspectiveCamera(60, ww2/hh2, 0.1, 100);
+  controls = new THREE.OrbitControls(camera[0], renderer[0].domElement);
+  camera[1].position.set(14, 3, 14);
+  camera[1].lookAt(new THREE.Vector3(10,3,3));
+  camera[2].position.set(4, 3, 4);
+  camera[2].lookAt(new THREE.Vector3(0,3,-10));
+  camera[3].position.set(-14, 3, -14);
+  camera[3].lookAt(new THREE.Vector3(0,3,-9));
+  camera[4].position.set(14, 3, -14);
+  camera[4].lookAt(new THREE.Vector3(10,3,0));
+  
+  // FPS視窗
+  if(fps == true){
+    stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '0px';
+    stats.domElement.style.zIndex = 100;
+    document.body.appendChild( stats.domElement );
+  }
+
+	// 燈光
+  new DirectLight(20,10,20,0.6);
+  new DirectLight(-5,10,-5,0.6);
+  new DirectLight(5,10,-5,0.6);
+  new DirectLight(-5,10,0,0.3);
+
+	new SpotLight(-12,8,10,7,-18);  	   //Fallout 4 Cover
+  new SpotLight(0,8,1.5,7,0,8);  		   //Nuka Cola
+  new SpotLight(1.5,8,0,6.5,8,0); 		 //Nuka Cola Space Girl
+  new SpotLight(-7.5,8,12,6,-7.5,18);  //War Never Changes
+  new SpotLight(0,8,-10,5,0,-18);		   //Frozen
+  new SpotLight(10,8,0,5,10,8);  		   //Bomb 
+  new SpotLight(-10,8,-10,9);
+  
+  // 地板
+  const planeGeometry = new THREE.PlaneGeometry(30, 30)
+  const planeTexture = texture("https://i.imgur.com/8Pp2QFA.jpg",2);
+  const planeMaterial = new THREE.MeshPhongMaterial({ map: planeTexture });
+	let plane = new THREE.Mesh(planeGeometry, planeMaterial)
+	plane.rotation.x = -0.5 * Math.PI // 使平面與 y 軸垂直，並讓正面朝上
+	plane.position.set(0, 0, 0)
+  plane.receiveShadow = true;
+	scene.add(plane);
+  
+  // 牆壁
+  new Wall(-15, 0);
+  new Wall(15, 0);
+  new Wall(0, -15, 0.5);
+  new Wall(0, 15, 0.5);
+  new Wall(5, 5, 0.5, 20);
+  new Wall(5, 0, 0, 10);
+  new Wall(5, -12.5, 0, 5);
+  new Wall(-5, -12.5, 0, 6);
+  new Wall(-12.5, -5, 0.5, 6);
+  
+  // 椅子
+  new Chair(0, 10);
+  new Chair(7.5, 10);
+  new Chair(-7.5, 10);
+  new Chair(10, 0, 0.5);
+  
+  //方塊
+  var geometry = new THREE.BoxGeometry(1,1,1);
+  var material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
+  cube = new THREE.Mesh( geometry,material);
+  cube.position.set(-10, 3.5, -10);
+  cube.rotation.x = 0.25*Math.PI;
+  cube.castShadow = true;
+  pickables.push(cube);
+  scene.add(cube);
+  
+  //畫作
+  new Art("a1", -14.4, 3.5, 10, 3, 3.9, 0.5, "https://i.imgur.com/Skz2OUY.jpg"); 
+  new Art("a2", 0, 3.5, 4.4, 3, 4.2, 1, "https://i.imgur.com/vz5eXyX.jpg");
+  new Art("a3", 4.4, 3.5, 0, 3, 4.5, -0.5, "https://i.imgur.com/us9o4H6.jpg");
+  new Art("a4", -7.5, 3.5, 14.4, 3, 4.5, 1, "https://i.imgur.com/By9sRBJ.jpg"); 
+  new Art("a5", 0, 3.5, -14.4, 6, 4, 0, "https://i.imgur.com/B9HDwhZ.jpg");
+  new Art("a6", 10, 3.5, 4.4, 6, 4, 1, "https://i.imgur.com/Inhynmx.jpg");
+  
+  //事件
+  document.getElementById("artplace").onchange=function(){view()};
+  document.addEventListener('mousemove', onDocumentMouseMove, false);
+}
+
+function animate() {
+	if(fps == true)
+		stats.update();
+  controls.update();
+  if(counter<200);
+  else if(counter<300){
+  	for(let i=1; i<5; i++)
+  		camera[i].rotation.y += 0.5 * Math.PI / 180;
+  }
+  else if(counter<500);
+  else if(counter<600){
+  	for(let i=1; i<5; i++)
+  		camera[i].rotation.y -= 0.5 * Math.PI / 180;
+  }
+  else counter=-1;
+  counter++;
+  cube.rotation.y += 0.01*Math.PI;
+  cube.rotation.z += 0.01*Math.PI;
+}
+
+function render() {
+  animate();
+  requestAnimationFrame(render);
+  for(let i=0; i<5; i++)
+  	renderer[i].render(scene, camera[i]);
+}
+
+function texture(source, w=1){
+  let loader = new THREE.TextureLoader();
+  loader.crossOrigin = '';
+  let tex = loader.load(source);
+  tex.repeat.set(w, w);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  return tex;
+}
+
+function view(){
+	var form = document.getElementById("artplace");
+	var v = form.value;
+	switch(v){
+    case '1': camera[0].position.set(-10, 3.5, 10);
+    				  controls.target = new THREE.Vector3(-14, 3.5, 10);
+              controls.update();
+              break;
+    case '2': camera[0].position.set(0, 3.5, -0.3);
+    				  controls.target = new THREE.Vector3(0, 3.5, 4.4);
+              break;
+    case '3': camera[0].position.set(0, 3.5, 0);
+    					controls.target = new THREE.Vector3(4.4, 3.5, 0);
+            	break;
+    case '4': camera[0].position.set(-7.5, 3.5, 10);
+    					controls.target = new THREE.Vector3(-7.5, 3.5, 14.4);
+            	break;
+    case '5': camera[0].position.set(0, 3.5, -8);
+    					controls.target = new THREE.Vector3(0, 3.5, -14.4);
+            	break;
+    case '6': camera[0].position.set(10, 3.5, -2);
+    					controls.target = new THREE.Vector3(10, 3.5, 4.4);
+            	break;
+    default : camera[0].position.set(0, 37, 0);
+    					controls.target = new THREE.Vector3(0,0,0);
+              break;
+  }
+　//alert(v);
+}
+
+function onDocumentMouseMove(event) {
+  event.preventDefault();
+  //mouse.x = (event.clientX / ww) * 2 - 1;
+  //mouse.y = -(event.clientY / hh) * 2 + 1;
+  mouse.x = ((event.clientX - container.offsetLeft + document.body.scrollLeft) / container.offsetWidth) * 2 - 1;
+  mouse.y = -((event.clientY - container.offsetTop + document.body.scrollTop) / container.offsetHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera[0]);
+
+  var intersects = raycaster.intersectObjects(pickables);
+
+  if (intersects.length > 0) {
+    switch(intersects[0].object.name){
+    	case "a1": document.getElementById("textOut").innerHTML =
+                 "電子遊戲 - 異塵餘生4的美術封面<br>" +
+                 "本次展覽的主題<br>";
+      					 break;
+      case "a2": document.getElementById("textOut").innerHTML =
+                 "飲料海報 - Nuka Cola<br>" +
+                 "遊戲中惡搞可口可樂(Coca Cola)的飲品<br>";
+      					 break;
+      case "a3": document.getElementById("textOut").innerHTML =
+                 "飲料海報 - Nuka Cola的宣傳廣告<br>" +
+                 "遊戲中隨處可見的Nuka Cola宣傳海報<br>" +
+                 "畫面中身穿太空衣反應現實中60年代的太空競賽<br>";
+      					 break;
+      case "a4": document.getElementById("textOut").innerHTML =
+                 "美術圖 - War Never Changes<br>" +
+                 "遊戲世界設定於一個架空的平行時空<br>" +
+                 "因為核戰爭導致世界殘破不堪<br>" +
+                 "標語切合人類引發核戰爭，而戰爭永不改變<br>";
+      					 break;
+      case "a5": document.getElementById("textOut").innerHTML =
+                 "美術圖 - Frozen<br>" +
+                 "遊戲中主角帶著兒子一起進入冷凍艙<br>" +
+                 "解凍後兒子卻被不明組織給綁架<br>" + 
+                 "同時這也是遊戲的開場劇情<br>";
+      					 break;
+      case "a6": document.getElementById("textOut").innerHTML =
+                 "美術圖 - Bomb<br>" +
+                 "遊戲中核彈爆炸的場景<br>" +
+                 "在此同時主角進入地底避難所的冷凍艙休眠<br>" + 
+                 "而外頭的世界變成殘破不堪<br>";
+      					 break;
+      default:   document.getElementById("textOut").innerHTML =" ";
+    }
+  }
+  else{
+  	document.getElementById("textOut").innerHTML =" ";
+  }
+}
+
+// 監聽螢幕寬高
+window.addEventListener('resize', function() {
+	var ww  = $("#container").innerWidth();
+  var hh  = $("#container").innerHeight();
+  var ww2 = $("#monitor1").innerWidth();
+  var hh2 = $("#monitor1").innerHeight();
+  
+  for(let i=0; i<5; i++){
+  	if(i==0){
+    	camera[i].aspect = ww / hh;
+    	renderer[i].setSize(ww, hh);
+    }
+    else{
+    	renderer[i].setSize(ww2, hh2);
+      camera[i].aspect = ww2 / hh2;
+    }
+    camera[i].updateProjectionMatrix();
+  }
+})
+
+init();
+render();
+view();
+
+window.focus();
+
+</script>

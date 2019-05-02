@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+  <html>
+
+  <head>
+    <title>HW4</title>
+    <link rel="stylesheet" href="./index.css">
+    <style>
+      body {
+        overflow: hidden
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <h1 style="text-align:center"> HW4 </h1>
+    <hr>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <div id="container" style="float:left; margin:1vw; margin-left:10vw; width:38vw; height:38vw; border:2px blue solid;">
+      <canvas></canvas>
+    </div>
+
+    <div style="float:left; margin:1vw; margin-right:10vw; width:30vw;">
+      Radius<br>
+      <input type=range id='radius' min=1 max=30 step=1 value=15><br>
+      <br>
+      Sound&nbsp;&nbsp;
+      <input type="checkbox" id='sound' value="1">
+    </div>
+    <div style="float:left; margin:1vw; margin-left:10vw; width:90vw;">
+      很自在的一顆球，不管視窗怎麼縮放都不會卡住，跑出視窗外也會記得回來
+    </div>
+  </body>
+
+</html>
+
+</html>
+
+<script type="text/javascript">
+// 碰撞視窗
+const canvas = document.querySelector('canvas');
+const ctx = canvas.getContext('2d');
+var width  = canvas.width  = window.innerWidth * 0.381;
+var height = canvas.height = window.innerWidth * 0.381;
+
+// 球和長方形
+var ball, cube;
+
+// 隨機數
+function random(min,max) {
+	a = Math.floor(Math.random()*(max-min)) + min;
+  while(a == 0)
+  	a = Math.floor(Math.random()*(max-min)) + min;
+  return a;
+}
+
+class Ball {
+	constructor(x, y, velX, velY, color, size){
+    this.x = x;
+    this.y = y;
+    this.velX = velX;
+    this.velY = velY;
+    this.color = color;
+    this.size = size;
+    this.sw = 0;
+    this.sw2 = 0;
+    this.sw3 = 0;
+    this.sw4 = 0;
+  }
+  draw(){
+  	ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+  update(){
+  	if((this.x + this.size) >= width && this.sw == 0){
+      this.velX = -(this.velX);
+      this.sw = 1;
+      this.sw3 = 0;
+    }
+    else if((this.x - this.size) <= 0 && this.sw3 == 0){
+      this.velX = -(this.velX);
+      this.sw = 0;
+      this.sw3 = 1;
+    }
+
+    if((this.y + this.size) >= height && this.sw2 == 0){
+      this.velY = -(this.velY);
+      this.sw2 = 1;
+      this.sw4 = 0;
+    }
+    else if((this.y - this.size) <= 0 && this.sw4 == 0){
+      this.velY = -(this.velY);
+      this.sw2 = 0;
+      this.sw4 = 1;
+    }
+
+    this.x += this.velX;
+    this.y += this.velY;
+  }
+  resize(size){
+  	this.size = size;
+  }
+}
+
+class Cube {
+	constructor(x, y){
+    this.x = x;
+    this.y = y;
+    this.size_x = 50;
+    this.size_y = 25;
+		this.color = "hsl(209, 100%, 50%)";
+  }
+  draw(){
+  	ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x,this.y,this.size_x,this.size_y);
+    ctx.fill();
+  }
+}
+
+
+function init() {
+  ball = new Ball(
+    random(15,width-15),
+    random(15,height-15),
+    random(-3,3),
+    random(-3,3),
+    "hsl(89, 43%, 51%)",
+    15
+  );
+  cube = new Cube(30, 30);
+
+  animation();
+}
+
+function animation(){
+	width  = canvas.width  = window.innerWidth * 0.381;
+	height = canvas.height = window.innerWidth * 0.381;
+  ctx.fillStyle = 'hsl(0, 0%, 100%)';
+  ctx.fillRect(0, 0, width, height);
+  cube.draw();
+  ball.draw();
+  ball.update();
+  getCollision();
+  
+	requestAnimationFrame(animation);
+}
+
+//碰撞檢測
+function getCollision(){
+	var param = {v:[ball.x, ball.y, ball.radius, cube.size_x, cube.size_y]};
+  var outputStr = jQuery.param(param);
+	$.get("http://127.0.0.1:1337/api?argv=" + outputStr, function(data){
+  	if(data && data.output){
+    	var coords = data.output.split(" ");
+      if(coords)
+      	ball.color = "hsl(23, 100%, 50%)";
+      else
+      	ball.color = "hsl(89, 43%, 51%)";
+    }
+  });
+	
+}
+
+init();
+
+//圓球半徑改變
+$('#radius').change( function() {
+	console.log ( $(this).val() );
+  var x = parseInt($(this).val());
+  ball.resize(x);
+  //alert("succes");
+});
+
+//滑鼠移動長方形位置
+canvas.addEventListener('click', function(ev){
+  var x, y;
+  if (ev.layerX || ev.layerX == 0) {
+    x = ev.layerX;
+    y = ev.layerY;
+  }
+  else if (ev.offsetX || ev.offsetX == 0) { // Opera
+    x = ev.offsetX;
+    y = ev.offsetY;
+  }
+  cube.x = x - 25;
+  cube.y = y - 12.5;
+  //alert("succes");
+}, false);
+
+</script>

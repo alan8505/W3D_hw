@@ -34,7 +34,7 @@ and open the template in the editor.
       <input type="checkbox" id='sound' value="1">
     </div>
     <div style="float:left; margin:1vw; margin-left:10vw; width:90vw;">
-      «Ü¦Û¦bªº¤@Áû²y¡A¤£ºŞµøµ¡«ç»òÁY©ñ³£¤£·|¥d¦í¡A¶]¥Xµøµ¡¥~¤]·|°O±o¦^¨Ó
+      å¾ˆè‡ªåœ¨çš„ä¸€é¡†çƒï¼Œä¸ç®¡è¦–çª—æ€éº¼ç¸®æ”¾éƒ½ä¸æœƒå¡ä½ï¼Œè·‘å‡ºè¦–çª—å¤–ä¹Ÿæœƒè¨˜å¾—å›ä¾†
     </div>
   </body>
 
@@ -43,16 +43,16 @@ and open the template in the editor.
 </html>
 
 <script type="text/javascript">
-// ¸I¼²µøµ¡
+// ç¢°æ’è¦–çª—
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 var width  = canvas.width  = window.innerWidth * 0.381;
 var height = canvas.height = window.innerWidth * 0.381;
 
-// ²y©Mªø¤è§Î
+// çƒå’Œé•·æ–¹å½¢
 var ball, cube;
 
-// ÀH¾÷¼Æ
+// éš¨æ©Ÿæ•¸
 function random(min,max) {
 	a = Math.floor(Math.random()*(max-min)) + min;
   while(a == 0)
@@ -154,7 +154,7 @@ function animation(){
 	requestAnimationFrame(animation);
 }
 
-//¸I¼²ÀË´ú
+//ç¢°æ’æª¢æ¸¬
 function getCollision(){
 	var param = {v:[ball.x, ball.y, ball.radius, cube.size_x, cube.size_y]};
   var outputStr = jQuery.param(param);
@@ -172,7 +172,7 @@ function getCollision(){
 
 init();
 
-//¶ê²y¥b®|§ïÅÜ
+//åœ“çƒåŠå¾‘æ”¹è®Š
 $('#radius').change( function() {
 	console.log ( $(this).val() );
   var x = parseInt($(this).val());
@@ -180,7 +180,7 @@ $('#radius').change( function() {
   //alert("succes");
 });
 
-//·Æ¹«²¾°Êªø¤è§Î¦ì¸m
+//æ»‘é¼ ç§»å‹•é•·æ–¹å½¢ä½ç½®
 canvas.addEventListener('click', function(ev){
   var x, y;
   if (ev.layerX || ev.layerX == 0) {

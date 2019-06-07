@@ -1,0 +1,41 @@
+
+<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<body style='margin : 0px; overflow: hidden;'>
+	<div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+		<input type="button" id="b01" style="background-image:url(model/01.png);background-size:100%;width:200px;height:150px;">
+		<input type="button" id="b02" style="background-image:url(model/02.png);background-size:100%;width:200px;height:150px;">
+		<input type="button" id="b03" style="background-image:url(model/03.png);background-size:100%;width:200px;height:150px;">
+	</div>
+	<a-scene embedded arjs>
+		<a-assets>
+			<a-asset-item id='flan-obj' src='model/Flan.obj'></a-asset-item>
+			<a-asset-item id='flan-mtl' src='model/Flan.mtl'></a-asset-item>
+			
+			<a-asset-item id='fastfood-obj' src='model/fastfood.obj'></a-asset-item>
+			<a-asset-item id='fastfood-mtl' src='model/fastfood.mtl'></a-asset-item>
+			
+			<a-asset-item id='breakfast-obj' src='model/Breakfast.obj'></a-asset-item>
+			<a-asset-item id='breakfast-mtl' src='model/Breakfast.mtl'></a-asset-item>
+		</a-assets>	
+		<a-marker preset="hiro" id=food>
+			<a-entity obj-model='obj: #flan-obj; mtl: #flan-mtl' position='0 0 0' scale='0.18 0.18 0.18' shadow='receive: true'></a-entity>
+		</a-marker>
+		<a-entity camera></a-entity>
+	</a-scene>
+</body>
+<script>
+	document.getElementById("b01").onclick=function(){
+		document.getElementById("food").innerHTML =
+		"<a-entity obj-model='obj: #flan-obj; mtl: #flan-mtl' position='0 0 0' scale='0.18 0.18 0.18' shadow='receive: true'></a-entity>";
+	};
+	document.getElementById("b02").onclick=function(){
+		document.getElementById("food").innerHTML =
+		"<a-entity obj-model='obj: #fastfood-obj; mtl: #fastfood-mtl' position='0 1 0' scale='3 3 3' shadow='receive: true'></a-entity>";
+	};
+	document.getElementById("b03").onclick=function(){
+		document.getElementById("food").innerHTML =
+		"<a-entity obj-model='obj: #breakfast-obj; mtl: #breakfast-mtl' position='0 0 0' scale='10 10 10' shadow='receive: true'></a-entity>";
+	};
+</script>
